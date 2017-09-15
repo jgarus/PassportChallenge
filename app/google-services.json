@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "408803109025",
+    "firebase_url": "https://passportchallenge-e1c3d.firebaseio.com",
+    "project_id": "passportchallenge-e1c3d",
+    "storage_bucket": "passportchallenge-e1c3d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:408803109025:android:fc9fedfe3985ae67",
+        "android_client_info": {
+          "package_name": "com.challenge.jesus.passportchallenge"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "408803109025-4qtm2fv09no7ao0703des7r6ggttpbit.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQMU29J0p5EY6wZ5owps4kV8HHT2ysYUY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

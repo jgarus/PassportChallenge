@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">PassportChallenge</string>
+    <string name="activity_main">User Profiles</string>
+    <string name="activity_create_user">Profile View</string>
+    <string name="list_view_image">User image in list view</string>
+
+    <!--menu strings -->
+    <string name="action_list_settings">List Settings</string>
+    <string name="action_filter_by">Filter By</string>
+    <string name="action_sort">Sort By</string>
+    <!-- sub menu strings -->
+    <string name="action_sort_by_id">Id</string>
+    <string name="action_sort_by_name">Name</string>
+    <string name="action_sort_by_age">Age</string>
+
 </resources>

@@ -16,7 +16,6 @@ public class User {
     private int _id, age;
 
     public User(){
-
     }
 
     public User(String background_color, String gender, String name, String image, List<String> hobbies, int _id, int age) {

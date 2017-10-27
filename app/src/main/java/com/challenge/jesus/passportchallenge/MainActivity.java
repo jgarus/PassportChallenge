@@ -1,11 +1,7 @@
 package com.challenge.jesus.passportchallenge;
 
-import android.content.DialogInterface;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -43,9 +39,6 @@ public class MainActivity extends AppCompatActivity {
     MainAdapter adapter;
     RecyclerView.LayoutManager layoutManager;
 
-    Bundle mBundleRecyclerViewState;
-    Parcelable mListState;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,12 +47,14 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
 
-        adapter = new MainAdapter(userList, MainActivity.this);
         //Initializing our RecyclerView (list)
         recyclerView = findViewById(R.id.recycler_view_main);
         layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
+
+        adapter = new MainAdapter(userList, MainActivity.this);
     }
+
 
     @Override
     protected void onStart() {
@@ -68,37 +63,9 @@ public class MainActivity extends AppCompatActivity {
         readFromDb();
     }
 
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        //mListState = layoutManager.onSaveInstanceState();
-        outState.putParcelable(KEY, mListState);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-
-        if (savedInstanceState != null)
-        mListState = savedInstanceState.getParcelable(KEY);
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        if (mListState != null) {
-
-            recyclerView.getLayoutManager().onRestoreInstanceState(mListState);
-        }
-    }
-
-
     //Used to read data from firebase database
     void readFromDb() {
+
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -122,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    //Write user
+    //Write user. Will be used later
     private void writeToDb(String background_color, String gender, String name, String image, List<String> hobbies, int _id, int age) {
         String id = reference.push().getKey();
         User user = new User(background_color, gender, name, image, hobbies, _id, age);

@@ -7,8 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -18,7 +16,7 @@ import android.widget.TextView;
  * Fragment will be used to create the new user
  */
 
-public class CreateUserFragment extends Fragment {
+public class OldCreateUserFragment extends Fragment {
 
     User user;
     TextView textView_profile_age;
@@ -27,7 +25,7 @@ public class CreateUserFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_create_user, container, false);
+        View v = inflater.inflate(R.layout._old_fragment_create_user, container, false);
         textView_profile_age = (TextView) getActivity().findViewById(R.id.textview_profile_age);
         Log.v("v", "ACTIVITY: " + getActivity().getLocalClassName());
         return v;

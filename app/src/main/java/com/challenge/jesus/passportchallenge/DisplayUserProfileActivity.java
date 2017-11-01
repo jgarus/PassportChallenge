@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class CreateUserActivity extends AppCompatActivity {
+public class DisplayUserProfileActivity extends AppCompatActivity {
 
     Toolbar toolbar;
     TextView textview_profile_id, textview_profile_age, textview_profile_gender, textview_profile_name;
@@ -20,7 +20,7 @@ public class CreateUserActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_user);
+        setContentView(R.layout.activity_display_user_profile);
 
         textview_profile_name = findViewById(R.id.textview_profile_name);
         textview_profile_id = findViewById(R.id.textview_profile_id);
@@ -44,7 +44,7 @@ public class CreateUserActivity extends AppCompatActivity {
         profile_image.setImageBitmap(base64Decoder(getIntent().getStringExtra("image")));
     }
 
-    //We will decode our image here. Could probably put this somewhere more convenient
+    //We will decode our image here
     private Bitmap base64Decoder(String base64String) {
         byte[] decodedString = Base64.decode(base64String, Base64.DEFAULT);
         return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
@@ -58,6 +58,5 @@ public class CreateUserActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
-
     }
 }

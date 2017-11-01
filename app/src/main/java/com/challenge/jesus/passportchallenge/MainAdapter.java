@@ -1,6 +1,5 @@
 package com.challenge.jesus.passportchallenge;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -8,14 +7,12 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -64,7 +61,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.RecyclerViewHo
                 extras.putString("gender", user.getGender());
                 extras.putString("image", user.getImage());
 
-                Intent intent = new Intent(context, CreateUserActivity.class);
+                Intent intent = new Intent(context, DisplayUserProfileActivity.class);
                 intent.putExtras(extras);
                 context.startActivity(intent);
                 Toast.makeText(context, "POSITION: " + position, Toast.LENGTH_SHORT).show();
@@ -72,11 +69,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.RecyclerViewHo
         });
     }
 
-    //We will decode our image here
-    private Bitmap base64Decoder(String base64String) {
-        byte[] decodedString = Base64.decode(base64String, Base64.DEFAULT);
-        return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-    }
+
 
     @Override
     public int getItemCount() {
@@ -111,5 +104,11 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.RecyclerViewHo
         public void onClick(View view) {
             recyclerViewClickListener.onClick(view, getAdapterPosition());
         }
+    }
+
+    //We will use this to decode image
+    private Bitmap base64Decoder(String base64String) {
+        byte[] decodedString = Base64.decode(base64String, Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
     }
 }

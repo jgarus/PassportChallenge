@@ -15,16 +15,33 @@ import android.view.ViewGroup;
 
 public class AddUserFragment extends Fragment {
 
+    Toolbar toolbar;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_add_user, container, false);
 
-        View v = inflater.inflate(R.layout.fragment_add_user, container, false);
+        toolbar = view.findViewById(R.id.toolbar_add_user);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_cancel);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        Toolbar toolbar = getActivity().findViewById(R.id.toolbar_add_user);
-        AppCompatActivity activity = (AppCompatActivity)getActivity();
-        activity.setSupportActionBar(toolbar);
+        toolbar.setTitle("Add New User");
 
-        return v;
+        backButtonPressed();
+
+        return view;
+    }
+
+    //Toolbar back button back action
+    public void backButtonPressed() {
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
     }
 }

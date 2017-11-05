@@ -41,7 +41,8 @@ public class DisplayUserProfileActivity extends AppCompatActivity {
         //toolbar back button action
         backButtonPressed();
 
-        textview_profile_name.setText(getIntent().getStringExtra("name"));
+        getSupportActionBar().setTitle(getIntent().getStringExtra("name"));
+        //textview_profile_name.setText(getIntent().getStringExtra("name"));
         textview_profile_id.setText(getIntent().getStringExtra("id"));
         textview_profile_age.setText(getIntent().getStringExtra("age"));
         textview_profile_gender.setText(getIntent().getStringExtra("gender"));

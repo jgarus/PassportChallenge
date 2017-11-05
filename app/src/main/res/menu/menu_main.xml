@@ -31,7 +31,7 @@
 
                     <item
                         android:id="@+id/action_sort_by_name_desc"
-                        android:icon="@drawable/ic_sort_by"
+                        android:icon="@drawable/ic_sort_descending"
                         android:title="@string/action_sort_by_name"
                         app:showAsAction="never" />
 

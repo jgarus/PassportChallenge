@@ -64,7 +64,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.RecyclerViewHo
                 Intent intent = new Intent(context, DisplayUserProfileActivity.class);
                 intent.putExtras(extras);
                 context.startActivity(intent);
-                Toast.makeText(context, "POSITION: " + position, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, "POSITION: " + position, Toast.LENGTH_SHORT).show();
             }
         });
     }

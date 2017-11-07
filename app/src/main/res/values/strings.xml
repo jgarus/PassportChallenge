@@ -9,6 +9,7 @@
     <string name="action_filter_by">Filter By</string>
     <string name="action_sort">Sort By</string>
     <string name="action_edit">Edit User</string>
+    <string name="action_done">Done</string>
     <!-- sub menu strings -->
     <string name="action_sort_by_id">Id</string>
     <string name="action_sort_by_name">Name</string>

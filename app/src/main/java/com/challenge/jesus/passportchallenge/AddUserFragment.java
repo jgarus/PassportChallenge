@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -28,7 +30,7 @@ public class AddUserFragment extends Fragment {
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        toolbar.setTitle("Add New User");
+        toolbar.setTitle("Add User");
 
         backButtonPressed();
 
@@ -44,4 +46,19 @@ public class AddUserFragment extends Fragment {
             }
         });
     }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
+        getActivity().getMenuInflater().inflate(R.menu.menu_confirm, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+
 }

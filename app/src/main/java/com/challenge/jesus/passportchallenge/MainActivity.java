@@ -33,6 +33,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    final String ADD_FRAGMENT = "Add User";
     final String KEY = "LIST";
     List<User> userList = new ArrayList<>();
 
@@ -96,13 +97,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    //Write user. Will be used later
-    private void writeToDb(String background_color, String gender, String name, String image, List<String> hobbies, int _id, int age) {
-        String id = reference.push().getKey();
-        User user = new User(background_color, gender, name, image, hobbies, _id, age);
-        reference.child(id).setValue(user);
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -144,9 +138,13 @@ public class MainActivity extends AppCompatActivity {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Fragment fragment = new AddUserFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("toolbar_title", ADD_FRAGMENT);
+                fragment.setArguments(bundle);
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.container, new AddUserFragment());
+                fragmentTransaction.replace(R.id.container, fragment, ADD_FRAGMENT);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }

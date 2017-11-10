@@ -1,5 +1,6 @@
 package com.challenge.jesus.passportchallenge;
 
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.graphics.Bitmap;
@@ -17,8 +18,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class DisplayUserProfileActivity extends AppCompatActivity {
 
+    final String EDIT_FRAGMENT = "Edit User";
+    String name, id, age, gender, image;
+
     Toolbar toolbar;
-    TextView textview_profile_id, textview_profile_age, textview_profile_gender, textview_profile_name;
+    TextView textview_profile_id, textview_profile_age, textview_profile_gender;
     CircleImageView profile_image;
 
     @Override
@@ -26,7 +30,8 @@ public class DisplayUserProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_user_profile);
 
-        textview_profile_name = findViewById(R.id.textview_profile_name);
+        setStrings();
+
         textview_profile_id = findViewById(R.id.textview_profile_id);
         textview_profile_age = findViewById(R.id.textview_profile_age);
         textview_profile_gender = findViewById(R.id.textview_profile_gender);
@@ -41,12 +46,20 @@ public class DisplayUserProfileActivity extends AppCompatActivity {
         //toolbar back button action
         backButtonPressed();
 
-        getSupportActionBar().setTitle(getIntent().getStringExtra("name"));
+        getSupportActionBar().setTitle(name);
         //textview_profile_name.setText(getIntent().getStringExtra("name"));
-        textview_profile_id.setText(getIntent().getStringExtra("id"));
-        textview_profile_age.setText(getIntent().getStringExtra("age"));
-        textview_profile_gender.setText(getIntent().getStringExtra("gender"));
-        profile_image.setImageBitmap(base64Decoder(getIntent().getStringExtra("image")));
+        textview_profile_id.setText(id);
+        textview_profile_age.setText(age);
+        textview_profile_gender.setText(gender);
+        profile_image.setImageBitmap(base64Decoder(image));
+    }
+
+    public void setStrings(){
+        name = getIntent().getStringExtra("name");
+        id = getIntent().getStringExtra("id");
+        age = getIntent().getStringExtra("age");
+        gender = getIntent().getStringExtra("gender");
+        image = getIntent().getStringExtra("image");
     }
 
     //We will decode our image here
@@ -85,10 +98,19 @@ public class DisplayUserProfileActivity extends AppCompatActivity {
         }
     }
 
+
     public void editUser() {
+        Fragment fragment = new AddUserFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("name", name);
+        bundle.putString("age", age);
+        bundle.putString("gender", gender);
+        bundle.putString("image", image);
+        bundle.putString("toolbar_title", EDIT_FRAGMENT);
+        fragment.setArguments(bundle);
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.container, new AddUserFragment());
+        fragmentTransaction.add(R.id.container, fragment, EDIT_FRAGMENT);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }

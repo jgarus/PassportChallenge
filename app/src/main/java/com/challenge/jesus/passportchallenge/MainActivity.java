@@ -34,7 +34,6 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     final String ADD_FRAGMENT = "Add User";
-    final String KEY = "LIST";
     List<User> userList = new ArrayList<>();
 
     //Firebase instantiation
@@ -58,43 +57,14 @@ public class MainActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new MainAdapter(userList, MainActivity.this);
-
-        addUser();
+        addUserFragment();
     }
-
 
     @Override
     protected void onStart() {
         super.onStart();
         //Load the data at the start of the application
         readFromDb();
-    }
-
-    //Used to read data from firebase database
-    void readFromDb() {
-
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                //clear if contains user
-                userList.clear();
-                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-                    User user = userSnapshot.getValue(User.class);
-                    userList.add(user);
-                }
-                //Setting list to our adapter and attaching it to RecyclerView
-                adapter = new MainAdapter(userList, MainActivity.this);
-                recyclerView.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                Log.v("v", "Failed to load data.", error.toException());
-                Toast.makeText(MainActivity.this, "Failed to load data.", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     @Override
@@ -133,7 +103,33 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void addUser(){
+    //Used to read data from firebase database
+    void readFromDb() {
+
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //clear if contains user
+                userList.clear();
+                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                    User user = userSnapshot.getValue(User.class);
+                    userList.add(user);
+                }
+                //Setting list to our adapter and attaching it to RecyclerView
+                adapter = new MainAdapter(userList, MainActivity.this);
+                recyclerView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Log.v("v", "Failed to load data.", error.toException());
+                Toast.makeText(MainActivity.this, "Failed to load data.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void addUserFragment(){
         FloatingActionButton floatingActionButton = findViewById(R.id.add_user);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override

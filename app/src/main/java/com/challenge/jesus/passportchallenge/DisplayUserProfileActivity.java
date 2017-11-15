@@ -43,16 +43,35 @@ public class DisplayUserProfileActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        //toolbar back button action
-        backButtonPressed();
-
         getSupportActionBar().setTitle(name);
-        //textview_profile_name.setText(getIntent().getStringExtra("name"));
         textview_profile_id.setText(id);
         textview_profile_age.setText(age);
         textview_profile_gender.setText(gender);
         profile_image.setImageBitmap(base64Decoder(image));
+
+        //call return action
+        returnToList();
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_edit_user, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_edit:
+                editUserFragment();
+                return true;
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 
     public void setStrings(){
         name = getIntent().getStringExtra("name");
@@ -68,8 +87,8 @@ public class DisplayUserProfileActivity extends AppCompatActivity {
         return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
     }
 
-    //Toolbar back button back action
-    public void backButtonPressed() {
+    //go back to list of users from toolbar back button
+    public void returnToList() {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,28 +97,7 @@ public class DisplayUserProfileActivity extends AppCompatActivity {
         });
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_edit_user, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_edit:
-                editUser();
-                return true;
-            default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-
-    public void editUser() {
+    public void editUserFragment() {
         Fragment fragment = new AddUserFragment();
         Bundle bundle = new Bundle();
         bundle.putString("name", name);

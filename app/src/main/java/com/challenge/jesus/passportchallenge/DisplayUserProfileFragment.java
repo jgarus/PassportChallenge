@@ -5,18 +5,22 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class DisplayUserProfileActivity extends AppCompatActivity {
+public class DisplayUserProfileFragment extends Fragment {
 
     final String EDIT_FRAGMENT = "Edit User";
     String name, id, age, gender, image;
@@ -25,25 +29,25 @@ public class DisplayUserProfileActivity extends AppCompatActivity {
     TextView textview_profile_id, textview_profile_age, textview_profile_gender;
     CircleImageView profile_image;
 
+
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_display_user_profile);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_display_user_profile, container, false);
 
         setStrings();
 
-        textview_profile_id = findViewById(R.id.textview_profile_id);
-        textview_profile_age = findViewById(R.id.textview_profile_age);
-        textview_profile_gender = findViewById(R.id.textview_profile_gender);
-        profile_image = findViewById(R.id.profile_image);
+        textview_profile_id = view.findViewById(R.id.textview_profile_id);
+        textview_profile_age = view.findViewById(R.id.textview_profile_age);
+        textview_profile_gender = view.findViewById(R.id.textview_profile_gender);
+        profile_image = view.findViewById(R.id.profile_image);
 
-        toolbar = findViewById(R.id.toolbar_frag);
-        setSupportActionBar(toolbar);
+        toolbar = view.findViewById(R.id.toolbar_profile_view);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-        getSupportActionBar().setTitle(name);
+        toolbar.setTitle(name);
         textview_profile_id.setText(id);
         textview_profile_age.setText(age);
         textview_profile_gender.setText(gender);
@@ -51,12 +55,22 @@ public class DisplayUserProfileActivity extends AppCompatActivity {
 
         //call return action
         returnToList();
+
+        return view;
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_edit_user, menu);
-        return true;
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
+        getActivity().getMenuInflater().inflate(R.menu.menu_edit_user, menu);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
@@ -74,11 +88,11 @@ public class DisplayUserProfileActivity extends AppCompatActivity {
 
 
     public void setStrings(){
-        name = getIntent().getStringExtra("name");
-        id = getIntent().getStringExtra("id");
-        age = getIntent().getStringExtra("age");
-        gender = getIntent().getStringExtra("gender");
-        image = getIntent().getStringExtra("image");
+        name = getArguments().getString("name");
+        id = getArguments().getString("id");
+        age = getArguments().getString("age");
+        gender = getArguments().getString("gender");
+        image = getArguments().getString("image");
     }
 
     //We will decode our image here
@@ -92,7 +106,7 @@ public class DisplayUserProfileActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+                getActivity().onBackPressed();
             }
         });
     }

@@ -1,7 +1,10 @@
 package com.challenge.jesus.passportchallenge;
 
+import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -11,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -19,7 +21,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by jesus on 9/14/17.
- *
  */
 
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.RecyclerViewHolder> {
@@ -54,21 +55,23 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.RecyclerViewHo
         holder.setRecyclerViewClickListener(new RecyclerViewClickListener() {
             @Override
             public void onClick(View view, int position) {
-                Bundle extras = new Bundle();
-                extras.putString("name", user.getName());
-                extras.putString("id", String.valueOf(user.get_id()));
-                extras.putString("age", String.valueOf(user.getAge()));
-                extras.putString("gender", user.getGender());
-                extras.putString("image", user.getImage());
 
-                Intent intent = new Intent(context, DisplayUserProfileActivity.class);
-                intent.putExtras(extras);
-                context.startActivity(intent);
-                //Toast.makeText(context, "POSITION: " + position, Toast.LENGTH_SHORT).show();
+                Fragment fragment = new DisplayUserProfileFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("name", user.getName());
+                bundle.putString("id", String.valueOf(user.get_id()));
+                bundle.putString("age", String.valueOf(user.getAge()));
+                bundle.putString("gender", user.getGender());
+                bundle.putString("image", user.getImage());
+                fragment.setArguments(bundle);
+                FragmentManager fragmentManager = ((Activity)context).getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.add(R.id.container, fragment, "Display User");
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
             }
         });
     }
-
 
 
     @Override

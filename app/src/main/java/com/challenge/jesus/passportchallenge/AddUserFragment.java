@@ -89,7 +89,6 @@ public class AddUserFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.v("random", "ID: " +_rand);
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
@@ -106,7 +105,7 @@ public class AddUserFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.action_done:
                 getUserInput();
-                Toast.makeText(getActivity(), "DONE", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), "DONE", Toast.LENGTH_SHORT).show();
                 return true;
             default:
                 // If we got here, the user's action was not recognized.

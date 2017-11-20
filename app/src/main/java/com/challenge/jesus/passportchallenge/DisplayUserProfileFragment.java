@@ -122,7 +122,7 @@ public class DisplayUserProfileFragment extends Fragment {
         fragment.setArguments(bundle);
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.container, fragment, EDIT_FRAGMENT);
+        fragmentTransaction.replace(R.id.container, fragment, EDIT_FRAGMENT);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }

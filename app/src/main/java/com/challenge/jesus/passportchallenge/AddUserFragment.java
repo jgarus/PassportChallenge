@@ -11,6 +11,7 @@ import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,7 +20,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
@@ -29,6 +32,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -42,26 +46,27 @@ public class AddUserFragment extends Fragment {
 
     String image;
 
-    String _rand = UUID.randomUUID().toString();
-
-
     private static int RESULT_LOAD_IMAGE = 1;
 
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference reference = database.getReference("user");
 
-    EditText input_name, input_age, input_gender;
+    EditText input_name, input_age;
     CircleImageView input_image;
     Toolbar toolbar;
+    Spinner genderSelectionSpinner;
+
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_user, container, false);
 
-        input_name = view.findViewById(R.id.input_first_name);
+        genderSelectionSpinner = view.findViewById(R.id.spinner);
+
+        input_name = view.findViewById(R.id.input_name);
         input_age = view.findViewById(R.id.input_age);
-        input_gender = view.findViewById(R.id.input_gender);
         input_image = view.findViewById(R.id.input_image);
 
         //Retrieve toolbar title
@@ -82,6 +87,8 @@ public class AddUserFragment extends Fragment {
         if (toolbar_title.equals("Edit User")) {
             populateEditableUser();
         }
+
+        selectGender();
 
         setImage();
         return view;
@@ -105,7 +112,7 @@ public class AddUserFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.action_done:
                 getUserInput();
-                //Toast.makeText(getActivity(), "DONE", Toast.LENGTH_SHORT).show();
+                getActivity().getFragmentManager().popBackStack();
                 return true;
             default:
                 // If we got here, the user's action was not recognized.
@@ -114,11 +121,22 @@ public class AddUserFragment extends Fragment {
         }
     }
 
+    //Setting the spinner here
+    public void selectGender(){
+
+        List<String> genderValues = new ArrayList<>(Arrays.asList("Male", "Female"));
+
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_item, genderValues);
+
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        genderSelectionSpinner.setAdapter(arrayAdapter);
+    }
+
     //Show user details when user is editing profile
     public void populateEditableUser() {
         input_name.setText(getArguments().getString("name"));
         input_age.setText(getArguments().getString("age"));
-        input_gender.setText(getArguments().getString("gender"));
+        //genderSelectionSpinner.setSelected(getArguments().getStringArrayList("gender"));
         input_image.setImageBitmap(base64Decoder(getArguments().getString("image")));
     }
 
@@ -141,15 +159,22 @@ public class AddUserFragment extends Fragment {
     }
 
     public void getUserInput() {
-        List<String> hobbies = new ArrayList<>(3);
-        hobbies.add("Running");
-        hobbies.add("Lattes");
-        hobbies.add("Yoga");
+        if (TextUtils.isEmpty(input_name.getText()) && TextUtils.isEmpty(input_age.getText())
+                && TextUtils.isEmpty(genderSelectionSpinner.getSelectedItem().toString())) {
 
-        try {
-            writeToDb("green", String.valueOf(input_gender.getText()), String.valueOf(input_name.getText()), image, hobbies, 784823, Integer.parseInt(input_age.getText().toString()));
-        } catch (NumberFormatException e) {
-            Log.v("number error", "error: " + e.toString());
+            Toast.makeText(getActivity(), "Fields cannot be empty", Toast.LENGTH_SHORT).show();
+        } else {
+            List<String> hobbies = new ArrayList<>(3);
+            hobbies.add("Running");
+            hobbies.add("Lattes");
+            hobbies.add("Yoga");
+
+            try {
+                writeToDb("green", String.valueOf(genderSelectionSpinner.getSelectedItem().toString()),
+                        String.valueOf(input_name.getText()), image, hobbies, 784823, Integer.parseInt(input_age.getText().toString()));
+            } catch (NumberFormatException e) {
+                Log.v("number error", "error: " + e.toString());
+            }
         }
     }
 
@@ -169,8 +194,8 @@ public class AddUserFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        final InputStream imageStream;
-        final Bitmap selectedImage;
+        InputStream imageStream;
+        Bitmap selectedImage;
 
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == RESULT_LOAD_IMAGE) {
@@ -182,9 +207,8 @@ public class AddUserFragment extends Fragment {
                     try {
                         imageStream = getActivity().getContentResolver().openInputStream(imageUri);
                         selectedImage = BitmapFactory.decodeStream(imageStream);
-                        input_image.setImageBitmap(base64Decoder(encodedImage(selectedImage)));
-                        image = encodedImage(selectedImage);
-                        Log.v("base64", "BASE 64 STRING: " + encodedImage(selectedImage));
+                        input_image.setImageBitmap(base64Decoder(encodeImage(selectedImage)));
+                        image = encodeImage(selectedImage);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
@@ -194,7 +218,7 @@ public class AddUserFragment extends Fragment {
     }
 
     //Encoding the image selected by the user
-    public String encodedImage(Bitmap bitmap) {
+    public String encodeImage(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
         byte[] b = byteArrayOutputStream.toByteArray();
@@ -204,12 +228,19 @@ public class AddUserFragment extends Fragment {
     //Write user
     private void writeToDb(String background_color, String gender, String name, String image, List<String> hobbies, int _id, int age) {
 
-        if (!gender.equals(null) && !name.equals(null) && age > 0) {
+        //If the user doesn't select an image, set a default
+        if (image == null) {
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.profile);
+            input_image.setImageBitmap(base64Decoder(encodeImage(bitmap)));
+            image = encodeImage(bitmap);
+        }
+
+        if (!gender.equals("") && !name.equals("") && age > 0) {
             //Uniquely generated id
             String id = reference.push().getKey();
             User user = new User(background_color, gender, name, image, hobbies, _id, age);
             reference.child(id).setValue(user);
-        } else {
+        }else {
             Toast.makeText(getActivity(), "Something is not right", Toast.LENGTH_SHORT).show();
         }
     }

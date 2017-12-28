@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -33,8 +32,10 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
+import java.util.Map;
+
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -45,17 +46,19 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class AddUserFragment extends Fragment {
 
     String image;
+    String toolbar_title;
 
     private static int RESULT_LOAD_IMAGE = 1;
 
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private DatabaseReference reference = database.getReference("user");
+    private DatabaseReference reference = database.getReference();
 
     EditText input_name, input_age;
     CircleImageView input_image;
     Toolbar toolbar;
     Spinner genderSelectionSpinner;
 
+    String id;
 
 
     @Nullable
@@ -70,7 +73,7 @@ public class AddUserFragment extends Fragment {
         input_image = view.findViewById(R.id.input_image);
 
         //Retrieve toolbar title
-        String toolbar_title = getArguments().getString("toolbar_title");
+        toolbar_title = getArguments().getString("toolbar_title");
 
         toolbar = view.findViewById(R.id.toolbar_add_user);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
@@ -122,7 +125,7 @@ public class AddUserFragment extends Fragment {
     }
 
     //Setting the spinner here
-    public void selectGender(){
+    public void selectGender() {
 
         List<String> genderValues = new ArrayList<>(Arrays.asList("Male", "Female"));
 
@@ -152,29 +155,30 @@ public class AddUserFragment extends Fragment {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Back", Toast.LENGTH_SHORT).show();
                 getActivity().onBackPressed();
             }
         });
     }
 
     public void getUserInput() {
+
+        List<String> hobbies = new ArrayList<>(3);
+        hobbies.add("Running");
+        hobbies.add("Lattes");
+        hobbies.add("Yoga");
+
         if (TextUtils.isEmpty(input_name.getText()) && TextUtils.isEmpty(input_age.getText())
                 && TextUtils.isEmpty(genderSelectionSpinner.getSelectedItem().toString())) {
 
             Toast.makeText(getActivity(), "Fields cannot be empty", Toast.LENGTH_SHORT).show();
         } else {
-            List<String> hobbies = new ArrayList<>(3);
-            hobbies.add("Running");
-            hobbies.add("Lattes");
-            hobbies.add("Yoga");
-
             try {
                 writeToDb("green", String.valueOf(genderSelectionSpinner.getSelectedItem().toString()),
                         String.valueOf(input_name.getText()), image, hobbies, 784823, Integer.parseInt(input_age.getText().toString()));
             } catch (NumberFormatException e) {
                 Log.v("number error", "error: " + e.toString());
             }
+
         }
     }
 
@@ -237,11 +241,22 @@ public class AddUserFragment extends Fragment {
 
         if (!gender.equals("") && !name.equals("") && age > 0) {
             //Uniquely generated id
-            String id = reference.push().getKey();
+            id = reference.push().getKey();
             User user = new User(background_color, gender, name, image, hobbies, _id, age);
-            reference.child(id).setValue(user);
-        }else {
-            Toast.makeText(getActivity(), "Something is not right", Toast.LENGTH_SHORT).show();
+            reference.child("user").child(id).setValue(user);
+        } else {
+            Toast.makeText(getActivity(), "Something went wrong", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    //Testing
+    private void updateUser(String background_color, String gender, String name, String image, List<String> hobbies, int _id, int age) {
+
+        User user = new User(background_color, gender, name, image, hobbies, _id, age);
+        Map<String, Object> userValues = user.toMap();
+
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put(id, userValues);
+        reference.updateChildren(childUpdates);
     }
 }

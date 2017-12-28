@@ -12,7 +12,9 @@
     <string name="action_done">Done</string>
     <!-- sub menu strings -->
     <string name="action_sort_by_id">Id</string>
-    <string name="action_sort_by_name">Name</string>
-    <string name="action_sort_by_age">Age</string>
+    <string name="action_sort_by_name_asc">Name Ascending</string>
+    <string name="action_sort_by_name_desc">Name Descending</string>
+    <string name="action_sort_by_age_asc">Age Ascending</string>
+    <string name="action_sort_by_age_desc">Age Descending</string>
 
 </resources>

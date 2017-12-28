@@ -3,8 +3,10 @@ package com.challenge.jesus.passportchallenge;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -92,8 +94,10 @@ public class MainActivity extends AppCompatActivity {
                 sortByNameDesc();
                 return true;
             case R.id.action_sort_by_age_asc:
+                sortByAgeAscending();
                 return true;
             case R.id.action_sort_by_age_desc:
+                sortByAgeDescending();
                 return true;
             default:
                 // If we got here, the user's action was not recognized.
@@ -178,5 +182,24 @@ public class MainActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
+    public void sortByAgeAscending() {
+        Collections.sort(userList, new Comparator<User>() {
+            @Override
+            public int compare(User user1, User user2) {
+                return String.valueOf(user1.getAge()).compareTo(String.valueOf(user2.getAge()));
+            }
+        });
+        adapter.notifyDataSetChanged();
+    }
+
+    public void sortByAgeDescending() {
+        Collections.sort(userList, new Comparator<User>() {
+            @Override
+            public int compare(User user1, User user2) {
+                return String.valueOf(user2.getAge()).compareTo(String.valueOf(user1.getAge()));
+            }
+        });
+        adapter.notifyDataSetChanged();
+    }
 }
 

@@ -1,6 +1,10 @@
 package com.challenge.jesus.passportchallenge;
 
+import com.google.firebase.database.Exclude;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by jesus on 9/14/17.
@@ -85,4 +89,19 @@ public class User {
         this.age = age;
     }
 
+
+    //Testing
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("_id", _id);
+        result.put("age", age);
+        result.put("background_color", background_color);
+        result.put("gender", gender);
+        result.put("hobbies", hobbies);
+        result.put("image", image);
+        result.put("name", name);
+
+        return result;
+    }
 }

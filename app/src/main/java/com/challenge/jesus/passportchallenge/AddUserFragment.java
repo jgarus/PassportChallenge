@@ -87,7 +87,7 @@ public class AddUserFragment extends Fragment {
         //Call return to profile view
         onCancel();
 
-        if (toolbar_title.equals("Edit User")) {
+        if (toolbar_title.equals("Edit Profile")) {
             populateEditableUser();
         }
 
@@ -242,8 +242,8 @@ public class AddUserFragment extends Fragment {
         if (!gender.equals("") && !name.equals("") && age > 0) {
             //Uniquely generated id
             id = reference.push().getKey();
-            User user = new User(background_color, gender, name, image, hobbies, _id, age);
-            reference.child("user").child(id).setValue(user);
+            Profile profile = new Profile(background_color, gender, name, image, hobbies, _id, age);
+            reference.child("profile").child(id).setValue(profile);
         } else {
             Toast.makeText(getActivity(), "Something went wrong", Toast.LENGTH_SHORT).show();
         }
@@ -252,8 +252,8 @@ public class AddUserFragment extends Fragment {
     //Testing
     private void updateUser(String background_color, String gender, String name, String image, List<String> hobbies, int _id, int age) {
 
-        User user = new User(background_color, gender, name, image, hobbies, _id, age);
-        Map<String, Object> userValues = user.toMap();
+        Profile profile = new Profile(background_color, gender, name, image, hobbies, _id, age);
+        Map<String, Object> userValues = profile.toMap();
 
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put(id, userValues);

@@ -11,7 +11,7 @@ import java.util.Map;
  *
  */
 
-public class User {
+public class Profile {
 
     //What we need Id, background color, gender, name, age, profile image, hobbies
 
@@ -19,11 +19,11 @@ public class User {
     private List<String> hobbies;
     private int _id, age;
 
-    public User(){
+    public Profile(){
 
     }
 
-    public User(String background_color, String gender, String name, String image, List<String> hobbies, int _id, int age) {
+    public Profile(String background_color, String gender, String name, String image, List<String> hobbies, int _id, int age) {
         this.background_color = background_color;
         this.gender = gender;
         this.name = name;

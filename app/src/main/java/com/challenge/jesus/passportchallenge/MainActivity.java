@@ -3,10 +3,8 @@ package com.challenge.jesus.passportchallenge;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -35,8 +33,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    final String ADD_FRAGMENT = "Add User";
-    List<User> userList = new ArrayList<>();
+    final String ADD_FRAGMENT = "Add Profile";
+    List<Profile> profileList = new ArrayList<>();
 
     //Firebase instantiation
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -114,13 +112,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //clear if contains user
-                userList.clear();
+                profileList.clear();
                 for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-                    User user = userSnapshot.getValue(User.class);
-                    userList.add(user);
+                    Profile profile = userSnapshot.getValue(Profile.class);
+                    profileList.add(profile);
                 }
                 //Setting list to our adapter and attaching it to RecyclerView
-                adapter = new MainAdapter(userList, MainActivity.this);
+                adapter = new MainAdapter(profileList, MainActivity.this);
                 recyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
             }
@@ -153,50 +151,50 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void sortByID() {
-        Collections.sort(userList, new Comparator<User>() {
+        Collections.sort(profileList, new Comparator<Profile>() {
             @Override
-            public int compare(User user1, User user2) {
-                return String.valueOf(user1.get_id()).compareTo(String.valueOf(user2.get_id()));
+            public int compare(Profile profile1, Profile profile2) {
+                return String.valueOf(profile1.get_id()).compareTo(String.valueOf(profile2.get_id()));
             }
         });
         adapter.notifyDataSetChanged();
     }
 
     public void sortByNameAsc() {
-        Collections.sort(userList, new Comparator<User>() {
+        Collections.sort(profileList, new Comparator<Profile>() {
             @Override
-            public int compare(User user1, User user2) {
-                return user1.getName().compareTo(user2.getName());
+            public int compare(Profile profile1, Profile profile2) {
+                return profile1.getName().compareTo(profile2.getName());
             }
         });
         adapter.notifyDataSetChanged();
     }
 
     public void sortByNameDesc() {
-        Collections.sort(userList, new Comparator<User>() {
+        Collections.sort(profileList, new Comparator<Profile>() {
             @Override
-            public int compare(User user1, User user2) {
-                return user2.getName().compareTo(user1.getName());
+            public int compare(Profile profile1, Profile profile2) {
+                return profile2.getName().compareTo(profile1.getName());
             }
         });
         adapter.notifyDataSetChanged();
     }
 
     public void sortByAgeAscending() {
-        Collections.sort(userList, new Comparator<User>() {
+        Collections.sort(profileList, new Comparator<Profile>() {
             @Override
-            public int compare(User user1, User user2) {
-                return String.valueOf(user1.getAge()).compareTo(String.valueOf(user2.getAge()));
+            public int compare(Profile profile1, Profile profile2) {
+                return String.valueOf(profile1.getAge()).compareTo(String.valueOf(profile2.getAge()));
             }
         });
         adapter.notifyDataSetChanged();
     }
 
     public void sortByAgeDescending() {
-        Collections.sort(userList, new Comparator<User>() {
+        Collections.sort(profileList, new Comparator<Profile>() {
             @Override
-            public int compare(User user1, User user2) {
-                return String.valueOf(user2.getAge()).compareTo(String.valueOf(user1.getAge()));
+            public int compare(Profile profile1, Profile profile2) {
+                return String.valueOf(profile2.getAge()).compareTo(String.valueOf(profile1.getAge()));
             }
         });
         adapter.notifyDataSetChanged();

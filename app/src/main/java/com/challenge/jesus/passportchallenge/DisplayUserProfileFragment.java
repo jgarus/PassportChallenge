@@ -22,7 +22,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class DisplayUserProfileFragment extends Fragment {
 
-    final String EDIT_FRAGMENT = "Edit User";
+    final String EDIT_FRAGMENT = "Edit Profile";
     String name, id, age, gender, image;
 
     Toolbar toolbar;

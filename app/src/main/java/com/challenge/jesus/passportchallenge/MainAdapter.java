@@ -26,11 +26,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.RecyclerViewHolder> {
 
     private Context context;
-    private List<User> userList;
+    private List<Profile> profileList;
 
-    MainAdapter(List<User> userList, Context context) {
+    MainAdapter(List<Profile> profileList, Context context) {
         this.context = context;
-        this.userList = userList;
+        this.profileList = profileList;
     }
 
     @Override
@@ -41,14 +41,14 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.RecyclerViewHo
 
     @Override
     public void onBindViewHolder(RecyclerViewHolder holder, int position) {
-        final User user = userList.get(position);
+        final Profile profile = profileList.get(position);
 
         //This is our Base64 string; it will be passed when calling the base64Decoder method
         //The method will return our image.
-        final String base64String = user.getImage();
+        final String base64String = profile.getImage();
 
-        holder.text_id.setText(String.valueOf(user.get_id()));
-        holder.text_name.setText(user.getName());
+        holder.text_id.setText(String.valueOf(profile.get_id()));
+        holder.text_name.setText(profile.getName());
         holder.user_image.setImageBitmap(base64Decoder(base64String));
 
         //Send our extras to the profile view activity
@@ -58,15 +58,15 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.RecyclerViewHo
 
                 Fragment fragment = new DisplayUserProfileFragment();
                 Bundle bundle = new Bundle();
-                bundle.putString("name", user.getName());
-                bundle.putString("id", String.valueOf(user.get_id()));
-                bundle.putString("age", String.valueOf(user.getAge()));
-                bundle.putString("gender", user.getGender());
-                bundle.putString("image", user.getImage());
+                bundle.putString("name", profile.getName());
+                bundle.putString("id", String.valueOf(profile.get_id()));
+                bundle.putString("age", String.valueOf(profile.getAge()));
+                bundle.putString("gender", profile.getGender());
+                bundle.putString("image", profile.getImage());
                 fragment.setArguments(bundle);
                 FragmentManager fragmentManager = ((Activity)context).getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.add(R.id.container, fragment, "Display User");
+                fragmentTransaction.add(R.id.container, fragment, "Display Profile");
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
@@ -76,7 +76,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.RecyclerViewHo
 
     @Override
     public int getItemCount() {
-        return userList.size();
+        return profileList.size();
     }
 
     //ViewHolder, for efficiency

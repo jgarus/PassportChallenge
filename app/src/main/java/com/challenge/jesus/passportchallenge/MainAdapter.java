@@ -57,13 +57,11 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.RecyclerViewHo
             public void onClick(View view, int position) {
 
                 Fragment fragment = new DisplayUserProfileFragment();
+
                 Bundle bundle = new Bundle();
-                bundle.putString("name", profile.getName());
-                bundle.putString("id", String.valueOf(profile.get_id()));
-                bundle.putString("age", String.valueOf(profile.getAge()));
-                bundle.putString("gender", profile.getGender());
-                bundle.putString("image", profile.getImage());
+                bundle.putParcelable("profile", profile);
                 fragment.setArguments(bundle);
+
                 FragmentManager fragmentManager = ((Activity)context).getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.add(R.id.container, fragment, "Display Profile");

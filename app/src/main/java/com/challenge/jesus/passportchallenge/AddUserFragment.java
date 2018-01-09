@@ -44,7 +44,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 
 public class AddUserFragment extends Fragment {
-
+    Profile profile;
     String image;
     String toolbar_title;
 
@@ -72,8 +72,7 @@ public class AddUserFragment extends Fragment {
         input_age = view.findViewById(R.id.input_age);
         input_image = view.findViewById(R.id.input_image);
 
-        //Retrieve toolbar title
-        toolbar_title = getArguments().getString("toolbar_title");
+        //toolbar_title = "";
 
         toolbar = view.findViewById(R.id.toolbar_add_user);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
@@ -82,18 +81,19 @@ public class AddUserFragment extends Fragment {
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         //Setting the toolbar title
-        toolbar.setTitle(toolbar_title);
+        //toolbar.setTitle(toolbar_title);
 
         //Call return to profile view
         onCancel();
 
-        if (toolbar_title.equals("Edit Profile")) {
-            populateEditableUser();
-        }
+
+        populateEditableUser();
+
 
         selectGender();
 
         setImage();
+
         return view;
     }
 
@@ -126,9 +126,7 @@ public class AddUserFragment extends Fragment {
 
     //Setting the spinner here
     public void selectGender() {
-
         List<String> genderValues = new ArrayList<>(Arrays.asList("Male", "Female"));
-
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_item, genderValues);
 
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -137,10 +135,14 @@ public class AddUserFragment extends Fragment {
 
     //Show user details when user is editing profile
     public void populateEditableUser() {
-        input_name.setText(getArguments().getString("name"));
-        input_age.setText(getArguments().getString("age"));
-        //genderSelectionSpinner.setSelected(getArguments().getStringArrayList("gender"));
-        input_image.setImageBitmap(base64Decoder(getArguments().getString("image")));
+
+        Bundle bundle = this.getArguments();
+        profile = bundle.getParcelable("profile");
+
+        toolbar.setTitle("Edit User");
+        input_name.setText(profile.getName());
+        input_age.setText(String.valueOf(profile.getAge()));
+        input_image.setImageBitmap(base64Decoder(profile.getImage()));
     }
 
     //We will decode our image here

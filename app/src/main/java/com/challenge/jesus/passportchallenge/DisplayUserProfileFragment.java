@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,19 +24,17 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class DisplayUserProfileFragment extends Fragment {
 
     final String EDIT_FRAGMENT = "Edit Profile";
-    String name, id, age, gender, image;
 
+    Bundle bundle;
+    Profile profile;
     Toolbar toolbar;
     TextView textview_profile_id, textview_profile_age, textview_profile_gender;
     CircleImageView profile_image;
-
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_display_user_profile, container, false);
-
-        setStrings();
 
         textview_profile_id = view.findViewById(R.id.textview_profile_id);
         textview_profile_age = view.findViewById(R.id.textview_profile_age);
@@ -47,11 +46,7 @@ public class DisplayUserProfileFragment extends Fragment {
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        toolbar.setTitle(name);
-        textview_profile_id.setText(id);
-        textview_profile_age.setText(age);
-        textview_profile_gender.setText(gender);
-        profile_image.setImageBitmap(base64Decoder(image));
+        setValues();
 
         //call return action
         returnToList();
@@ -64,7 +59,6 @@ public class DisplayUserProfileFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
-
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -86,13 +80,15 @@ public class DisplayUserProfileFragment extends Fragment {
         }
     }
 
+    public void setValues() {
+        bundle = this.getArguments();
+        profile = bundle.getParcelable("profile");
 
-    public void setStrings(){
-        name = getArguments().getString("name");
-        id = getArguments().getString("id");
-        age = getArguments().getString("age");
-        gender = getArguments().getString("gender");
-        image = getArguments().getString("image");
+        toolbar.setTitle(profile.getName());
+        textview_profile_id.setText(String.valueOf(profile.get_id()));
+        textview_profile_age.setText(String.valueOf(profile.getAge()));
+        textview_profile_gender.setText(profile.getGender());
+        profile_image.setImageBitmap(base64Decoder(profile.getImage()));
     }
 
     //We will decode our image here
@@ -113,13 +109,11 @@ public class DisplayUserProfileFragment extends Fragment {
 
     public void editUserFragment() {
         Fragment fragment = new AddUserFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString("name", name);
-        bundle.putString("age", age);
-        bundle.putString("gender", gender);
-        bundle.putString("image", image);
-        bundle.putString("toolbar_title", EDIT_FRAGMENT);
+
+        bundle = new Bundle();
+        bundle.putParcelable("profile", profile);
         fragment.setArguments(bundle);
+
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.container, fragment, EDIT_FRAGMENT);

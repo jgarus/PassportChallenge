@@ -33,7 +33,6 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    final String ADD_FRAGMENT = "Add Profile";
     List<Profile> profileList = new ArrayList<>();
 
     //Firebase instantiation
@@ -137,12 +136,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Fragment fragment = new AddUserFragment();
-                Bundle bundle = new Bundle();
-                bundle.putString("toolbar_title", ADD_FRAGMENT);
-                fragment.setArguments(bundle);
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.add(R.id.container, fragment, ADD_FRAGMENT);
+                fragmentTransaction.add(R.id.container, fragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }

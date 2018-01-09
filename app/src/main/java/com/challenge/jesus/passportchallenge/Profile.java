@@ -1,5 +1,8 @@
 package com.challenge.jesus.passportchallenge;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.firebase.database.Exclude;
 
 import java.util.HashMap;
@@ -11,7 +14,7 @@ import java.util.Map;
  *
  */
 
-public class Profile {
+public class Profile implements Parcelable {
 
     //What we need Id, background color, gender, name, age, profile image, hobbies
 
@@ -89,18 +92,56 @@ public class Profile {
         this.age = age;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(background_color);
+        dest.writeString(gender);
+        dest.writeString(name);
+        dest.writeString(image);
+        dest.writeList(hobbies);
+        dest.writeInt(_id);
+        dest.writeInt(age);
+    }
+
+    public static final Creator<Profile> CREATOR = new Creator<Profile>() {
+        @Override
+        public Profile createFromParcel(Parcel in) {
+            return new Profile(in);
+        }
+
+        @Override
+        public Profile[] newArray(int size) {
+            return new Profile[size];
+        }
+    };
+
+    protected Profile(Parcel in) {
+        background_color = in.readString();
+        gender = in.readString();
+        name = in.readString();
+        image = in.readString();
+        hobbies = in.createStringArrayList();
+        _id = in.readInt();
+        age = in.readInt();
+    }
 
     //Testing
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
-        result.put("_id", _id);
-        result.put("age", age);
         result.put("background_color", background_color);
         result.put("gender", gender);
-        result.put("hobbies", hobbies);
-        result.put("image", image);
         result.put("name", name);
+        result.put("image", image);
+        result.put("hobbies", hobbies);
+        result.put("_id", _id);
+        result.put("age", age);
 
         return result;
     }

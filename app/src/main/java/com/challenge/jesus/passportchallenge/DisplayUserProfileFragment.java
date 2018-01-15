@@ -71,7 +71,7 @@ public class DisplayUserProfileFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_edit:
-                editUserFragment();
+                //will make editable
                 return true;
             default:
                 // If we got here, the user's action was not recognized.
@@ -107,17 +107,14 @@ public class DisplayUserProfileFragment extends Fragment {
         });
     }
 
-    public void editUserFragment() {
-        Fragment fragment = new AddUserFragment();
-
-        bundle = new Bundle();
-        bundle.putParcelable("profile", profile);
-        fragment.setArguments(bundle);
-
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.container, fragment, EDIT_FRAGMENT);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
-    }
+    //Testing
+//    private void updateUser(String background_color, String gender, String name, String image, List<String> hobbies, int _id, int age) {
+//
+//        Profile profile = new Profile(background_color, gender, name, image, hobbies, _id, age);
+//        Map<String, Object> userValues = profile.toMap();
+//
+//        Map<String, Object> childUpdates = new HashMap<>();
+//        childUpdates.put(id, userValues);
+//        reference.updateChildren(childUpdates);
+//    }
 }

@@ -44,9 +44,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 
 public class AddUserFragment extends Fragment {
-    Profile profile;
+
     String image;
-    String toolbar_title;
 
     private static int RESULT_LOAD_IMAGE = 1;
 
@@ -60,7 +59,6 @@ public class AddUserFragment extends Fragment {
 
     String id;
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -72,26 +70,15 @@ public class AddUserFragment extends Fragment {
         input_age = view.findViewById(R.id.input_age);
         input_image = view.findViewById(R.id.input_image);
 
-        //toolbar_title = "";
-
         toolbar = view.findViewById(R.id.toolbar_add_user);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_cancel);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        //Setting the toolbar title
-        //toolbar.setTitle(toolbar_title);
-
         //Call return to profile view
         onCancel();
-
-
-        populateEditableUser();
-
-
         selectGender();
-
         setImage();
 
         return view;
@@ -131,18 +118,6 @@ public class AddUserFragment extends Fragment {
 
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         genderSelectionSpinner.setAdapter(arrayAdapter);
-    }
-
-    //Show user details when user is editing profile
-    public void populateEditableUser() {
-
-        Bundle bundle = this.getArguments();
-        profile = bundle.getParcelable("profile");
-
-        toolbar.setTitle("Edit User");
-        input_name.setText(profile.getName());
-        input_age.setText(String.valueOf(profile.getAge()));
-        input_image.setImageBitmap(base64Decoder(profile.getImage()));
     }
 
     //We will decode our image here
@@ -249,16 +224,5 @@ public class AddUserFragment extends Fragment {
         } else {
             Toast.makeText(getActivity(), "Something went wrong", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    //Testing
-    private void updateUser(String background_color, String gender, String name, String image, List<String> hobbies, int _id, int age) {
-
-        Profile profile = new Profile(background_color, gender, name, image, hobbies, _id, age);
-        Map<String, Object> userValues = profile.toMap();
-
-        Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put(id, userValues);
-        reference.updateChildren(childUpdates);
     }
 }

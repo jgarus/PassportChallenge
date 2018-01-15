@@ -15,6 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -45,11 +47,15 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.RecyclerViewHo
 
         //This is our Base64 string; it will be passed when calling the base64Decoder method
         //The method will return our image.
-        final String base64String = profile.getImage();
 
         holder.text_id.setText(String.valueOf(profile.get_id()));
         holder.text_name.setText(profile.getName());
-        holder.user_image.setImageBitmap(base64Decoder(base64String));
+
+        //Decode and load image with Glide
+        Glide.with(context)
+                .asBitmap()
+                .load(Base64.decode(profile.getImage(), Base64.DEFAULT))
+                .into(holder.user_image);
 
         //Send our extras to the profile view activity
         holder.setRecyclerViewClickListener(new RecyclerViewClickListener() {
@@ -99,17 +105,9 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.RecyclerViewHo
             this.recyclerViewClickListener = recyclerViewClickListener;
         }
 
-
-        //Using only onClick, onLongClick can be added if needed
         @Override
         public void onClick(View view) {
             recyclerViewClickListener.onClick(view, getAdapterPosition());
         }
-    }
-
-    //We will use this to decode image
-    private Bitmap base64Decoder(String base64String) {
-        byte[] decodedString = Base64.decode(base64String, Base64.DEFAULT);
-        return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
     }
 }

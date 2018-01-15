@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
     //Firebase instantiation
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private DatabaseReference reference = database.getReference("user");
+    private DatabaseReference reference = database.getReference("profile");
 
     RecyclerView recyclerView;
     MainAdapter adapter;

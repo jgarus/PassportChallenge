@@ -19,6 +19,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class DisplayUserProfileFragment extends Fragment {
@@ -88,13 +90,12 @@ public class DisplayUserProfileFragment extends Fragment {
         textview_profile_id.setText(String.valueOf(profile.get_id()));
         textview_profile_age.setText(String.valueOf(profile.getAge()));
         textview_profile_gender.setText(profile.getGender());
-        profile_image.setImageBitmap(base64Decoder(profile.getImage()));
-    }
 
-    //We will decode our image here
-    private Bitmap base64Decoder(String base64String) {
-        byte[] decodedString = Base64.decode(base64String, Base64.DEFAULT);
-        return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        //Decode and load image with Glide
+        Glide.with(DisplayUserProfileFragment.this)
+                .asBitmap()
+                .load(Base64.decode(profile.getImage(), Base64.DEFAULT))
+                .into(profile_image);
     }
 
     //go back to list of users from toolbar back button

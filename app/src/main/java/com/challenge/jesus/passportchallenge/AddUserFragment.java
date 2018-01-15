@@ -24,6 +24,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -188,7 +189,14 @@ public class AddUserFragment extends Fragment {
                     try {
                         imageStream = getActivity().getContentResolver().openInputStream(imageUri);
                         selectedImage = BitmapFactory.decodeStream(imageStream);
-                        input_image.setImageBitmap(base64Decoder(encodeImage(selectedImage)));
+
+                        //Load image with Glide
+                        Glide.with(AddUserFragment.this)
+                                .asBitmap()
+                                .load(selectedImage)
+                                .into(input_image);
+
+                        //Encode the previously set image which is being sent to the database
                         image = encodeImage(selectedImage);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
@@ -198,7 +206,7 @@ public class AddUserFragment extends Fragment {
         }
     }
 
-    //Encoding the image selected by the user
+    //Encode image selected
     public String encodeImage(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);

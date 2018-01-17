@@ -25,6 +25,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class DisplayUserProfileFragment extends Fragment {
 
+    MenuItem editProfile;
+    MenuItem editDone;
+    private boolean edit;
     final String EDIT_FRAGMENT = "Edit Profile";
 
     Bundle bundle;
@@ -66,6 +69,8 @@ public class DisplayUserProfileFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
         getActivity().getMenuInflater().inflate(R.menu.menu_edit_user, menu);
+        editProfile = menu.findItem(R.id.action_edit);
+        editDone = menu.findItem(R.id.action_done).setVisible(false);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -74,6 +79,8 @@ public class DisplayUserProfileFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.action_edit:
                 //will make editable
+                editProfile.setVisible(false);
+                editDone.setVisible(true);
                 return true;
             default:
                 // If we got here, the user's action was not recognized.

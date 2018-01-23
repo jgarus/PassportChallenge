@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +18,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -27,7 +30,6 @@ public class DisplayUserProfileFragment extends Fragment {
 
     MenuItem editProfile;
     MenuItem editDone;
-    private boolean edit;
     final String EDIT_FRAGMENT = "Edit Profile";
 
     Bundle bundle;
@@ -78,7 +80,6 @@ public class DisplayUserProfileFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_edit:
-                //will make editable
                 editProfile.setVisible(false);
                 editDone.setVisible(true);
                 return true;
@@ -113,6 +114,16 @@ public class DisplayUserProfileFragment extends Fragment {
                 getActivity().onBackPressed();
             }
         });
+    }
+
+    public void animationEdit(View view){
+        Animation anim = new AlphaAnimation(0.0f, 1.0f);
+        anim.setDuration(650);
+        anim.setStartOffset(15);
+        anim.setRepeatMode(Animation.REVERSE);
+        anim.setRepeatCount(Animation.INFINITE);
+        view.setAnimation(anim);
+        view.startAnimation(anim);
     }
 
     //Testing

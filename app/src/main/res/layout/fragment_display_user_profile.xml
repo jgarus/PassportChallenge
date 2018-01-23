@@ -107,6 +107,7 @@
                     android:layout_below="@+id/textview_profile_id"
                     android:layout_toEndOf="@+id/label_gender"
                     android:layout_toRightOf="@+id/label_gender"
+                    android:maxLength="2"
                     android:hint="Age"
                     android:padding="8dp"
                     android:textSize="24sp" />

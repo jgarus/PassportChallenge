@@ -62,16 +62,16 @@
                 android:paddingRight="16dp"
                 app:layout_scrollFlags="scroll|enterAlways" >
 
-                <TextView
+
+                <ImageView
                     android:id="@+id/label_id"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_id"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_alignParentTop="true"
                     android:layout_toLeftOf="@+id/textview_profile_id"
                     android:layout_toStartOf="@+id/textview_profile_id"
-                    android:hint="ID: "
-                    android:padding="8dp"
-                    android:textSize="24sp" />
+                    android:padding="8dp" />
 
                 <TextView
                     android:id="@+id/textview_profile_id"
@@ -86,17 +86,19 @@
                     android:padding="8dp"
                     android:textSize="24sp" />
 
-                <TextView
+                <ImageView
                     android:id="@+id/label_age"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/textview_profile_age"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_alignBottom="@+id/textview_profile_age"
+                    android:layout_below="@+id/label_id"
                     android:layout_toLeftOf="@+id/textview_profile_id"
                     android:layout_toStartOf="@+id/textview_profile_id"
-                    android:hint="Age: "
                     android:padding="8dp"
-                    android:textSize="24sp" />
+                    android:src="@drawable/ic_date" />
+
+
+
 
                 <TextView
                     android:id="@+id/textview_profile_age"
@@ -112,16 +114,16 @@
                     android:padding="8dp"
                     android:textSize="24sp" />
 
-                <TextView
+
+                <ImageView
                     android:id="@+id/label_gender"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_gender"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:layout_below="@+id/label_age"
-                    android:padding="8dp"
-                    android:hint="Gender: "
-                    android:textSize="24sp" />
+                    android:padding="8dp" />
 
                 <TextView
                     android:id="@+id/textview_profile_gender"

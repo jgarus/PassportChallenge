@@ -16,6 +16,9 @@ import java.util.Map;
 
 public class Profile implements Parcelable {
 
+    @Exclude
+    String key;
+
     //What we need Id, background color, gender, name, age, profile image, hobbies
 
     private String background_color, gender, name, image;
@@ -90,6 +93,14 @@ public class Profile implements Parcelable {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     @Override

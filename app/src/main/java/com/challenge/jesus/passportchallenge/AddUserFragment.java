@@ -58,7 +58,6 @@ public class AddUserFragment extends Fragment {
     Toolbar toolbar;
     Spinner genderSelectionSpinner;
 
-    String id;
 
     @Nullable
     @Override
@@ -226,9 +225,9 @@ public class AddUserFragment extends Fragment {
 
         if (!gender.equals("") && !name.equals("") && age > 0) {
             //Uniquely generated id
-            id = reference.push().getKey();
+            String key = reference.push().getKey();
             Profile profile = new Profile(background_color, gender, name, image, hobbies, _id, age);
-            reference.child("profile").child(id).setValue(profile);
+            reference.child("profile").child(key).setValue(profile);
         } else {
             Toast.makeText(getActivity(), "Something went wrong", Toast.LENGTH_SHORT).show();
         }

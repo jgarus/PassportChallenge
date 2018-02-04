@@ -112,8 +112,13 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //clear if contains user
                 profileList.clear();
-                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-                    Profile profile = userSnapshot.getValue(Profile.class);
+                for (DataSnapshot profileSnapshot : dataSnapshot.getChildren()) {
+                    Profile profile = profileSnapshot.getValue(Profile.class);
+
+                    //ASSERTING null since push will create a key each time a new profile is made
+                    assert profile != null;
+                    profile.setKey(dataSnapshot.getKey());
+
                     profileList.add(profile);
                 }
                 //Setting list to our adapter and attaching it to RecyclerView

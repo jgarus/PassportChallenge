@@ -91,7 +91,21 @@ public class DisplayUserProfileFragment extends Fragment {
             case R.id.action_edit:
                 editProfile.setVisible(false);
                 editDone.setVisible(true);
+                animationEdit(textview_profile_age);
+
+                textview_profile_age.requestFocus();
+                textview_profile_age.setFocusable(true);
+                textview_profile_age.setFocusableInTouchMode(true);
+                textview_profile_age.setClickable(true);
+                textview_profile_age.setEnabled(true);
+                textview_profile_age.setCursorVisible(true);
+                textview_profile_age.setInputType(InputType.TYPE_CLASS_NUMBER);
                 return true;
+            case R.id.action_done:
+                updateProfile(Integer.valueOf(textview_profile_age.getText().toString()));
+                editProfile.setVisible(true);
+                editDone.setVisible(false);
+                textview_profile_age.setEnabled(false);
             default:
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
@@ -102,7 +116,6 @@ public class DisplayUserProfileFragment extends Fragment {
     public void setValues() {
         bundle = this.getArguments();
         profile = bundle.getParcelable("profile");
-
         toolbar.setTitle(profile.getName());
         textview_profile_id.setText(String.valueOf(profile.get_id()));
         textview_profile_age.setText(String.valueOf(profile.getAge()));
@@ -135,14 +148,27 @@ public class DisplayUserProfileFragment extends Fragment {
         view.startAnimation(anim);
     }
 
-    //Testing
-//    private void updateUser(String background_color, String gender, String name, String image, List<String> hobbies, int _id, int age) {
-//
-//        Profile profile = new Profile(background_color, gender, name, image, hobbies, _id, age);
-//        Map<String, Object> userValues = profile.toMap();
-//
-//        Map<String, Object> childUpdates = new HashMap<>();
-//        childUpdates.put(id, userValues);
-//        reference.updateChildren(childUpdates);
-//    }
+    void updateProfile(final int age) {
+        final DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+        reference.child("profile").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    //Get profile keys
+                    String key = postSnapshot.getKey();
+
+                    //If our current profile key matches a retrieved key, then update
+                    if (profile.getKey().equals(key)) {
+                       //TODO: Update profile here
+                        Log.v("v", "PROFILE KEY: " + key);
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Log.v("v", "Failed to load data.", error.toException());
+            }
+        });
+    }
 }

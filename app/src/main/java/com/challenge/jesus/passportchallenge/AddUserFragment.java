@@ -25,8 +25,13 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageMetadata;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -36,6 +41,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -46,6 +52,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AddUserFragment extends Fragment {
 
+    FirebaseStorage storage = FirebaseStorage.getInstance();
     String image;
 
     private static int RESULT_LOAD_IMAGE = 1;
@@ -207,9 +214,24 @@ public class AddUserFragment extends Fragment {
 
     //Encode image selected
     public String encodeImage(Bitmap bitmap) {
+        String path = "prfile_images/" + UUID.randomUUID() + ".png";
+        StorageReference storageReference = storage.getReference(path);
+
+
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
         byte[] b = byteArrayOutputStream.toByteArray();
+
+        //upload task, will be used to show upload action
+        UploadTask uploadTask = storageReference.putBytes(b);
+        uploadTask.addOnSuccessListener(getActivity(), new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                //getting download url
+                Uri url = taskSnapshot.getDownloadUrl();
+                Log.v("v", "URL: " + url);
+            }
+        });
         return Base64.encodeToString(b, Base64.DEFAULT);
     }
 

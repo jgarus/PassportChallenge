@@ -53,7 +53,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class AddUserFragment extends Fragment {
 
     FirebaseStorage storage = FirebaseStorage.getInstance();
-    String image;
+    String imageURL;
 
     private static int RESULT_LOAD_IMAGE = 1;
 
@@ -158,7 +158,7 @@ public class AddUserFragment extends Fragment {
         } else {
             try {
                 writeToDb("green", String.valueOf(genderSelectionSpinner.getSelectedItem().toString()),
-                        String.valueOf(input_name.getText()), image, hobbies, 784823, Integer.parseInt(input_age.getText().toString()));
+                        String.valueOf(input_name.getText()), imageURL, hobbies, 784823, Integer.parseInt(input_age.getText().toString()));
             } catch (NumberFormatException e) {
                 Log.v("number error", "error: " + e.toString());
             }
@@ -188,12 +188,12 @@ public class AddUserFragment extends Fragment {
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == RESULT_LOAD_IMAGE) {
                 //get the URL from data
-                Uri imageUri = data.getData();
-                if (null != imageUri) {
+                Uri selectedImageUri = data.getData();
+                if (null != selectedImageUri) {
                     //if our image uri isn't null, set the image
-                    Log.v("uri", "IMAGE URI: " + imageUri);
+                    Log.v("uri", "IMAGE URI: " + selectedImageUri);
                     try {
-                        imageStream = getActivity().getContentResolver().openInputStream(imageUri);
+                        imageStream = getActivity().getContentResolver().openInputStream(selectedImageUri);
                         selectedImage = BitmapFactory.decodeStream(imageStream);
 
                         //Load image with Glide
@@ -203,7 +203,7 @@ public class AddUserFragment extends Fragment {
                                 .into(input_image);
 
                         //Encode the previously set image which is being sent to the database
-                        image = encodeImage(selectedImage);
+                        imageURL = encodeImage(selectedImage);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
@@ -236,19 +236,19 @@ public class AddUserFragment extends Fragment {
     }
 
     //Write user
-    private void writeToDb(String background_color, String gender, String name, String image, List<String> hobbies, int _id, int age) {
+    private void writeToDb(String background_color, String gender, String name, String imageURL, List<String> hobbies, int _id, int age) {
 
         //If the user doesn't select an image, set a default
-        if (image == null) {
+        if (imageURL == null) {
             Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.profile);
             input_image.setImageBitmap(base64Decoder(encodeImage(bitmap)));
-            image = encodeImage(bitmap);
+            imageURL = encodeImage(bitmap);
         }
 
         if (!gender.equals("") && !name.equals("") && age > 0) {
             //Uniquely generated id
             String key = reference.push().getKey();
-            Profile profile = new Profile(background_color, gender, name, image, hobbies, _id, age);
+            Profile profile = new Profile(background_color, gender, name, imageURL, hobbies, _id, age);
             reference.child("profile").child(key).setValue(profile);
         } else {
             Toast.makeText(getActivity(), "Something went wrong", Toast.LENGTH_SHORT).show();

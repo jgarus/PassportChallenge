@@ -124,7 +124,7 @@ public class DisplayUserProfileFragment extends Fragment {
         //Decode and load image with Glide
         Glide.with(DisplayUserProfileFragment.this)
                 .asBitmap()
-                .load(Base64.decode(profile.getImage(), Base64.DEFAULT))
+                .load(profile.getImage())
                 .into(profile_image);
     }
 

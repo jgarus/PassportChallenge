@@ -185,7 +185,7 @@ public class AddUserFragment extends Fragment {
         InputStream imageStream;
         Bitmap selectedImage;
 
-        if (resultCode == Activity.RESULT_OK) {
+        if (resultCode == Activity.RESULT_OK) {jjjjj
             if (requestCode == RESULT_LOAD_IMAGE) {
                 //get the URL from data
                 Uri selectedImageUri = data.getData();
@@ -202,8 +202,9 @@ public class AddUserFragment extends Fragment {
                                 .load(selectedImage)
                                 .into(input_image);
 
-                        //Encode the previously set image which is being sent to the database
-                        imageURL = encodeImage(selectedImage);
+                        //Encode the set image which is being sent to the database
+                        //imageURL = encodeImage(selectedImage);
+                        encodeImage(selectedImage);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
@@ -213,7 +214,7 @@ public class AddUserFragment extends Fragment {
     }
 
     //Encode image selected
-    public String encodeImage(Bitmap bitmap) {
+    public void encodeImage(Bitmap bitmap) {
         String path = "prfile_images/" + UUID.randomUUID() + ".png";
         StorageReference storageReference = storage.getReference(path);
 
@@ -229,10 +230,13 @@ public class AddUserFragment extends Fragment {
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 //getting download url
                 Uri url = taskSnapshot.getDownloadUrl();
-                Log.v("v", "URL: " + url);
+                //Log.v("v", "URL: " + url);
+                assert url != null;
+                imageURL = url.toString();
+                Log.v("v", "URL: " + imageURL);
             }
         });
-        return Base64.encodeToString(b, Base64.DEFAULT);
+        //return Base64.encodeToString(b, Base64.DEFAULT);
     }
 
     //Write user
@@ -241,8 +245,9 @@ public class AddUserFragment extends Fragment {
         //If the user doesn't select an image, set a default
         if (imageURL == null) {
             Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.profile);
-            input_image.setImageBitmap(base64Decoder(encodeImage(bitmap)));
-            imageURL = encodeImage(bitmap);
+            //input_image.setImageBitmap(base64Decoder(encodeImage(bitmap)));
+            input_image.setImageBitmap(bitmap);
+            encodeImage(bitmap);
         }
 
         if (!gender.equals("") && !name.equals("") && age > 0) {

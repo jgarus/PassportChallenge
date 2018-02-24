@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,8 +55,10 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.RecyclerViewHo
         //Decode and load image with Glide
         Glide.with(context)
                 .asBitmap()
-                .load(Base64.decode(profile.getImage(), Base64.DEFAULT))
+                .load(profile.getImage())
                 .into(holder.user_image);
+
+        Log.v("v", "image url from profile: " + profile.getImage());
 
         //Send our extras to the profile view activity
         holder.setRecyclerViewClickListener(new RecyclerViewClickListener() {

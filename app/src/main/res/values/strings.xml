@@ -17,4 +17,8 @@
     <string name="action_sort_by_age_asc">Age Ascending</string>
     <string name="action_sort_by_age_desc">Age Descending</string>
 
+    <!-- hint strings -->
+    <string name="hint_name">Name</string>
+    <string name="hint_age">Age</string>
+
 </resources>

@@ -23,13 +23,14 @@ public class Profile implements Parcelable {
 
     private String background_color, gender, name, image;
     private List<String> hobbies;
-    private int _id, age;
+    private int age;
+    private long _id;
 
     public Profile(){
 
     }
 
-    public Profile(String background_color, String gender, String name, String image, List<String> hobbies, int _id, int age) {
+    public Profile(String background_color, String gender, String name, String image, List<String> hobbies, long _id, int age) {
         this.background_color = background_color;
         this.gender = gender;
         this.name = name;
@@ -79,7 +80,7 @@ public class Profile implements Parcelable {
         this.hobbies = hobbies;
     }
 
-    public int get_id() {
+    public long get_id() {
         return _id;
     }
 
@@ -116,7 +117,7 @@ public class Profile implements Parcelable {
         dest.writeString(name);
         dest.writeString(image);
         dest.writeList(hobbies);
-        dest.writeInt(_id);
+        dest.writeLong(_id);
         dest.writeInt(age);
     }
 

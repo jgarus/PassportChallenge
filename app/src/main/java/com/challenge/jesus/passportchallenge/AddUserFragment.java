@@ -42,6 +42,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicLong;
 
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -127,13 +128,6 @@ public class AddUserFragment extends Fragment {
         genderSelectionSpinner.setAdapter(arrayAdapter);
     }
 
-    //We will decode our image here
-    private Bitmap base64Decoder(String base64String) {
-        byte[] decodedString = Base64.decode(base64String, Base64.DEFAULT);
-        return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-    }
-
-
     //Toolbar back button back action
     public void onCancel() {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -158,7 +152,7 @@ public class AddUserFragment extends Fragment {
         } else {
             try {
                 writeToDb("green", String.valueOf(genderSelectionSpinner.getSelectedItem().toString()),
-                        String.valueOf(input_name.getText()), imageURL, hobbies, 784823, Integer.parseInt(input_age.getText().toString()));
+                        String.valueOf(input_name.getText()), imageURL, hobbies, generateID(), Integer.parseInt(input_age.getText().toString()));
             } catch (NumberFormatException e) {
                 Log.v("number error", "error: " + e.toString());
             }
@@ -185,7 +179,7 @@ public class AddUserFragment extends Fragment {
         InputStream imageStream;
         Bitmap selectedImage;
 
-        if (resultCode == Activity.RESULT_OK) {jjjjj
+        if (resultCode == Activity.RESULT_OK) {
             if (requestCode == RESULT_LOAD_IMAGE) {
                 //get the URL from data
                 Uri selectedImageUri = data.getData();
@@ -240,7 +234,7 @@ public class AddUserFragment extends Fragment {
     }
 
     //Write user
-    private void writeToDb(String background_color, String gender, String name, String imageURL, List<String> hobbies, int _id, int age) {
+    private void writeToDb(String background_color, String gender, String name, String imageURL, List<String> hobbies, long _id, int age) {
 
         //If the user doesn't select an image, set a default
         if (imageURL == null) {
@@ -258,5 +252,12 @@ public class AddUserFragment extends Fragment {
         } else {
             Toast.makeText(getActivity(), "Something went wrong", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    //Will generate a simple ID for the profile being created
+    public Long generateID() {
+        Long currentTimeMillis = System.currentTimeMillis() % 10000000;
+        AtomicLong id = new AtomicLong(currentTimeMillis);
+        return id.getAndIncrement();
     }
 }

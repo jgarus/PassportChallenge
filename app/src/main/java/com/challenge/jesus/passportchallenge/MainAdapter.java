@@ -5,11 +5,8 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,7 +62,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.RecyclerViewHo
             @Override
             public void onClick(View view, int position) {
 
-                Fragment fragment = new DisplayUserProfileFragment();
+                Fragment fragment = new DisplayProfileFragment();
 
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("profile", profile);
